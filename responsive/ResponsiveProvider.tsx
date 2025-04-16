@@ -119,7 +119,7 @@ export function ResponsiveProvider({
  * @returns {Object} Responsive context value with additional boolean device flags
  * @throws {Error} If used outside of ResponsiveProvider
  */
-export const useResponsive = () => {
+export const useResponsive = ():any => {
     const responsiveContextValue = useContext(ResponsiveContext);
     
     // Ensure hook is used within a provider
