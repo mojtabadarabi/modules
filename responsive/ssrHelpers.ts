@@ -8,8 +8,8 @@ import { getDeviceTypeFromUserAgent } from "./lib";
  * @returns {string} The user agent string
  * @throws {Error} If user agent header is not found
  */
-export const getUserAgent = () => {
-    const userAgent = headers().get('user-agent');
+export const getUserAgent = async() => {
+    const userAgent = (await headers()).get('user-agent');
 
     if (!userAgent) throw new Error('user agent is not defined');
     return userAgent;
@@ -20,14 +20,14 @@ export const getUserAgent = () => {
  * @param {Object} params - Function parameters
  * @param {NextResponse} params.response - The Next.js response object for cookie operations
  */
-export const checkAndSetDeviceType = ({ response }: { response: NextResponse }) => {
+export const checkAndSetDeviceType = async({ response }: { response: NextResponse }) => {
     const cookieIsMobile = getDeviceTypeCookie();
 
     // Only set cookie if it doesn't already exist
     if (cookieIsMobile === undefined) {
         setDeviceTypeCookie(
             response, 
-            getDeviceTypeFromUserAgent(getUserAgent())
+            getDeviceTypeFromUserAgent(await getUserAgent())
         );
     }
 };
@@ -36,8 +36,8 @@ export const checkAndSetDeviceType = ({ response }: { response: NextResponse }) 
  * Retrieves the device type from cookies
  * @returns {string|undefined} The stored device type or undefined if not found
  */
-export const getDeviceTypeCookie = () => {
-    return cookies().get(responsiveConfig.responsiveCookieKey)?.value;
+export const getDeviceTypeCookie = async() => {
+    return (await cookies()).get(responsiveConfig.responsiveCookieKey)?.value;
 };
 
 /**
@@ -57,6 +57,7 @@ export const setDeviceTypeCookie = (response: NextResponse, deviceType: string) 
  * Determines the initial device type by checking cookie first, then falling back to user agent detection
  * @returns {string} The detected device type
  */
-export const getInitialDeviceType = () => {
-    return getDeviceTypeCookie() || getDeviceTypeFromUserAgent(getUserAgent());
+export const getInitialDeviceType = async() => {
+    const userAgent = await getUserAgent()
+    return await getDeviceTypeCookie() || getDeviceTypeFromUserAgent(userAgent) || responsiveConfig.defaultView;
 };
