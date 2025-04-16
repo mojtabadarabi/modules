@@ -22,7 +22,7 @@ To use this repository in your project as a **Git submodule**, follow these step
 
 in package.json
 "setup_modules": "git submodule add https://github.com/mojtabadarabi/modules.git src/where-you-want"
-"update_modules":"git submodule update"
+"update_modules": "git submodule update --remote --checkout src/modules && cd src/modules && git pull origin master && cd ../.."
 
 in layout file
 <ResponsiveProvider initialDeviceType={getInitialDeviceType()}>
