@@ -39,3 +39,11 @@ const responsiveConfig: ResponsiveConfig = {
     },
     defaultView: 'desktop'
 }
+
+------------------------------------------ React to print ---------------------------------------------------
+import usePrint from 'ReactToPrint/usePrint'
+
+const { handlePrint, Container } = usePrint({ customHeader: CustomHeader })
+
+// you can add custom header to printed document 
+// you should install react-to-print library
